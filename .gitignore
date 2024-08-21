@@ -1,2 +1,7 @@
+/RESULTS/*.csv
+/RESULTS/*.out
 /libsdsl
 /sdsl-lite
+*.o
+*.out
+d-maw
