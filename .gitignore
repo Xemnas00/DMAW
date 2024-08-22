@@ -3,5 +3,4 @@
 /libsdsl
 /sdsl-lite
 *.o
-*.out
 d-maw

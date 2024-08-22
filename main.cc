@@ -449,7 +449,10 @@ int main(int argc, char **argv)
 
 	double end = gettime();
 
-	if ( ! ( out_fd = fopen ( sw . output_filename, "w" ) ) )
+    char * output_dist_filename = (char *) malloc(100 * sizeof(char));
+	sprintf(output_dist_filename, "./RESULTS/%s", output_filename);
+
+	if ( ! ( out_fd = fopen ( output_dist_filename, "w" ) ) )
 	{
 		fprintf ( stderr, " Error: Cannot open file %s!\n", output_filename );
 		return ( 1 );
@@ -476,47 +479,47 @@ int main(int argc, char **argv)
 
 
 	char * scmaw_most_common_lengths = (char *) malloc(100 * sizeof(char));
-	sprintf(scmaw_most_common_lengths, "./Results/SCMAW_most_common_lengths_%s.csv", output_filename);
+	sprintf(scmaw_most_common_lengths, "./RESULTS/SCMAW_most_common_lengths_%s.csv", output_filename);
 	save_on_file_INT(scmaw_most_common_lengths, scMawHighestOccMat, num_seqs, seqs_id);
 
 	char * dmaw_most_common_lengths = (char *) malloc(100 * sizeof(char));
-	sprintf(dmaw_most_common_lengths, "./Results/DMAW_most_common_lengths_%s.csv", output_filename);
+	sprintf(dmaw_most_common_lengths, "./RESULTS/DMAW_most_common_lengths_%s.csv", output_filename);
 	save_on_file_INT(dmaw_most_common_lengths, dMawHighestOccMat, num_seqs, seqs_id);
 
 	char * union_most_common_lengths = (char *) malloc(100 * sizeof(char));
-	sprintf(union_most_common_lengths, "./Results/UNION_most_common_lengths_%s.csv", output_filename);
+	sprintf(union_most_common_lengths, "./RESULTS/UNION_most_common_lengths_%s.csv", output_filename);
 	save_on_file_INT(union_most_common_lengths, UnionHighestOccMat, num_seqs, seqs_id);
 
 	char * card_ratios = (char *) malloc(100 * sizeof(char));
-	sprintf(card_ratios, "./Results/DMAW_symmetricDifference_cardinality_ratios_%s.csv", output_filename);
+	sprintf(card_ratios, "./RESULTS/DMAW_symmetricDifference_cardinality_ratios_%s.csv", output_filename);
 	save_on_file_double(card_ratios, cardRatioMatrix, num_seqs, seqs_id);
 
 	char * union_card_ratios = (char *) malloc(100 * sizeof(char));
-	sprintf(union_card_ratios, "./Results/DMAW_UNION_cardinality_ratios_%s.csv", output_filename);
+	sprintf(union_card_ratios, "./RESULTS/DMAW_UNION_cardinality_ratios_%s.csv", output_filename);
 	save_on_file_double(union_card_ratios, UnionCardRatioMatrix, num_seqs, seqs_id);
 
 	char * length_ratios = (char *) malloc(100 * sizeof(char));
-	sprintf(length_ratios, "./Results/DMAW_symmetricDifference_length_ratios_%s.csv", output_filename);
+	sprintf(length_ratios, "./RESULTS/DMAW_symmetricDifference_length_ratios_%s.csv", output_filename);
 	save_on_file_double(length_ratios, totalLengthRatioMatrix, num_seqs, seqs_id);
 
 	char * union_length_ratios = (char *) malloc(100 * sizeof(char));
-	sprintf(union_length_ratios, "./Results/DMAW_UNION_length_ratios_%s.csv", output_filename);
+	sprintf(union_length_ratios, "./RESULTS/DMAW_UNION_length_ratios_%s.csv", output_filename);
 	save_on_file_double(union_length_ratios, UnionTotalLengthRatioMatrix, num_seqs, seqs_id);
 
 	char * hist_seqs = (char *) malloc(100 * sizeof(char));
-	sprintf(hist_seqs, "./Results/Total_maws_histograms_%s.csv", output_filename);
+	sprintf(hist_seqs, "./RESULTS/Total_maws_histograms_%s.csv", output_filename);
 	save_on_file_INT_histograms(hist_seqs, histMatrix, num_seqs, sw.k, sw.K, seqs_id);
 
 	char * SCMAW_hist_seqs = (char *) malloc(100 * sizeof(char));
-	sprintf(SCMAW_hist_seqs, "./Results/SCMAW_maws_histograms_%s.csv", output_filename);
+	sprintf(SCMAW_hist_seqs, "./RESULTS/SCMAW_maws_histograms_%s.csv", output_filename);
 	save_on_file_INT_histograms_complex(SCMAW_hist_seqs, SCMAWhistMatrix, num_seqs, sw.k, sw.K, seqs_id);
 
 	char * DMAW_hist_seqs = (char *) malloc(100 * sizeof(char));
-	sprintf(DMAW_hist_seqs, "./Results/DMAW_maws_histograms_%s.csv", output_filename);
+	sprintf(DMAW_hist_seqs, "./RESULTS/DMAW_maws_histograms_%s.csv", output_filename);
 	save_on_file_INT_histograms_complex(DMAW_hist_seqs, DMAWhistMatrix, num_seqs, sw.k, sw.K, seqs_id);
 
 	char * UNION_hist_seqs = (char *) malloc(100 * sizeof(char));
-	sprintf(UNION_hist_seqs, "./Results/UNION_maws_histograms_%s.csv", output_filename);
+	sprintf(UNION_hist_seqs, "./RESULTS/UNION_maws_histograms_%s.csv", output_filename);
 	save_on_file_INT_histograms_complex(UNION_hist_seqs, UnionhistMatrix, num_seqs, sw.k, sw.K, seqs_id);
 
 
@@ -546,6 +549,19 @@ int main(int argc, char **argv)
         free(histMatrix);
         free(DMAWhistMatrix);
         free(SCMAWhistMatrix);
+        //Filenames 
+        free(output_dist_filename);
+        free(scmaw_most_common_lengths);
+        free(dmaw_most_common_lengths);
+        free(union_most_common_lengths);
+        free(card_ratios);
+        free(union_card_ratios);
+        free(length_ratios);
+        free(union_length_ratios);
+        free(hist_seqs);
+        free(SCMAW_hist_seqs);
+        free(DMAW_hist_seqs);
+        free(UNION_hist_seqs);
 
 	return ( 0 );
 }
