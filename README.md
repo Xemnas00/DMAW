@@ -5,7 +5,7 @@ Tool for evaluating the D-MAW distance between strings and some statistics.
 
 To compile <b>D-MAW</b>, please follow the instructions given in file INSTALL.
 
-The results of the execution of this tool will be stored in the "RESULTS" directory. For further information about the results please take a look at "RESULTS/README.md".
+The results of the execution of this tool will be stored in the "RESULTS" directory. For further information about the results take a look at "RESULTS/README.md".
 
 When publishing work that is based on the results from D-MAW please cite:
 ```
