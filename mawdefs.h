@@ -22,9 +22,9 @@
 #define DEL_STR                 "$"
 
 #define DNA                     "ACGTN"                         //DNA alphabet
-#define PROT                    "ARNDCQEGHILKMFPSTWYVBJO"          //Proteins alphabet
+#define PROT                    "ARNDCQEGHILKMFPSTWYVBJO"       //Proteins alphabet
 #define IUPAC                   "ACGTUWSMKRYBDHVNEF"          	//IUPAC alphabet
-#define SEDICI                  "ABCDEFGHIJKLMNOP"              //16 chartacter alphabet
+#define SIXTEEN                 "ABCDEFGHIJKLMNOP"              //16 chartacter alphabet
 #define SOLONmax(a,b) ((a) > (b)) ? (a) : (b)
 #define SOLONmin(a,b) ((a) < (b)) ? (a) : (b)
 

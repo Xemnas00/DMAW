@@ -81,7 +81,7 @@ unsigned int compute_maw ( unsigned char * seq, unsigned char * seq_id, struct T
 
 	if      ( ! strcmp ( "DNA", sw . alphabet ) )   sigma = strlen ( ( char * ) DNA );
         else if ( ! strcmp ( "PROT", sw . alphabet ) )  sigma = strlen ( ( char * ) PROT );
-        else if ( ! strcmp ( "SEDICI", sw . alphabet ) )  sigma = strlen ( ( char * ) SEDICI );
+        else if ( ! strcmp ( "SIXTEEN", sw . alphabet ) )  sigma = strlen ( ( char * ) SIXTEEN );
 
         /* Compute the suffix array */
         SA = ( INT * ) malloc( ( n ) * sizeof( INT ) );
