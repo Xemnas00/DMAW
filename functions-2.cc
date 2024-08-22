@@ -1094,159 +1094,6 @@ unsigned int maw_seq_comp_factors ( unsigned char * X, TMaw * mawX, unsigned int
     printf("\n\n\n");
 #endif
 
-    /*INT * scMawHighestOccArr;
-
-    scMawHighestOccArr = (INT *) calloc((K - k + 1), sizeof(INT));
-
-
-    //printf("MAWs of X: %d\nMAWs of Y: %d\n", *NmawX, *NmawY);
-	while ( i < (* NmawX) && j < (* NmawY) )
-	{
-
-	  if ( mawX[i] . letter < mawY[j] . letter )
-	  {
-          if(!factor_of(mawX[i], true, m, XY, N, SA, invSA, LCP)) {i++; continue;}
-	      double u = mawX[i] . size + 1;
-	      double one = 1;
-	      ( * XY_distance ) += one / ( u * u );
-	      i++;
-	  }
-	  else if ( mawX[i] . letter > mawY[j] . letter )
-	  {
-          if(!factor_of(mawY[j], false, m, XY, N, SA, invSA, LCP)) {j++; continue;}
-	      double u = mawY[j] . size + 1;
-	      double one = 1;
-	      ( * XY_distance ) += one / ( u * u );
-	      j++;
-	  }
-	  else if ( mawX[i] . letter == mawY[j] . letter )
-	  {
-	    INT ix = mawX[i] . pos;
-	    INT iy = m + mawY[j] . pos;
-	    INT i_rank = invSA[ix];
-	    INT j_rank = invSA[iy];
-	    INT l = SOLONmin ( invSA[ ix ], invSA[ iy ] );
-            INT r = SOLONmax ( invSA[ ix ], invSA[ iy ] );
-	    INT LCE = LCP[rmq ( l + 1, r ) ];
-
-	    if ( LCE >= mawX[i] . size && mawX[i] . size == mawY[j] . size )
-	    {
-	      i++; j++;
-	    }
-	    else
-	    {
-	      if ( XY[ix + LCE] < XY[iy + LCE] )
-	      {
-            if(!factor_of(mawX[i], true, m, XY, N, SA, invSA, LCP)) {i++; continue;}
-		double u = mawX[i] . size + 1;
-		double one = 1;
-	        ( * XY_distance ) += one / ( u * u );
-		i++;
-	      }
-	      else
-	      {
-            if(!factor_of(mawY[j], false, m, XY, N, SA, invSA, LCP)) {j++; continue;}
-	        double u = mawY[j] . size + 1;
-		double one = 1;
-	        ( * XY_distance ) += one / ( u * u );
-		j++;
-	      }
-	    }
-	  }
-	}
-
-	for ( ; i < (* NmawX); i++ )
-	{
-      if(!factor_of(mawX[i], true, m, XY, N, SA, invSA, LCP)) {i++; continue;}
-	  double u = mawX[i] . size + 1;
-	  double one = 1;
-	  ( * XY_distance ) += one / ( u * u );
-	}
-
-	for ( ; j < (* NmawY); j++ )
-	{
-       if(!factor_of(mawY[j], false, m, XY, N, SA, invSA, LCP)) {j++; continue;}
-	   double u = mawY[j] . size + 1;
-	   double one = 1;
-	   ( * XY_distance ) += one / ( u * u );
-	}*/
-
-	/////MIOOOOOOOO
-	/*while ( i < (* NmawX) && j < (* NmawY) )
-	{
-	  if ( mawX[i] . letter < mawY[j] . letter )
-	  {
-	      double u = mawX[i] . size + 1;
-	      double one = 1;
-	      ( * XY_distance ) += one / ( u * u );
-	      scMawHighestOccArr[(int) u - k]++;
-	      scNumber++;
-	      i++;
-	  }
-	  else if ( mawX[i] . letter > mawY[j] . letter )
-	  {
-	      double u = mawY[j] . size + 1;
-	      double one = 1;
-	      ( * XY_distance ) += one / ( u * u );
-	      scMawHighestOccArr[(int) u - k]++;
-	      scNumber++;
-	      j++;
-	  }
-	  else if ( mawX[i] . letter == mawY[j] . letter )
-	  {
-	    INT ix = mawX[i] . pos;
-	    INT iy = m + mawY[j] . pos;
-	    INT i_rank = invSA[ix];
-	    INT j_rank = invSA[iy];
-	    INT l = SOLONmin ( invSA[ ix ], invSA[ iy ] );
-            INT r = SOLONmax ( invSA[ ix ], invSA[ iy ] );
-	    INT LCE = LCP[rmq ( l + 1, r ) ];
-
-	    if ( LCE >= mawX[i] . size && mawX[i] . size == mawY[j] . size )
-	    {
-	      i++; j++;
-	    }
-	    else
-	    {
-	      if ( XY[ix + LCE] < XY[iy + LCE] )
-	      {
-		double u = mawX[i] . size + 1;
-		double one = 1;
-	        ( * XY_distance ) += one / ( u * u );
-	        scMawHighestOccArr[(int) u - k]++;
-	        scNumber++;
-		i++;
-	      }
-	      else
-	      {
-	        double u = mawY[j] . size + 1;
-		double one = 1;
-	        ( * XY_distance ) += one / ( u * u );
-	        scMawHighestOccArr[(int) u - k]++;
-	        scNumber++;
-		j++;
-	      }
-	    }
-	  }
-	}
-
-	for ( ; i < (* NmawX); i++ )
-	{
-	  double u = mawX[i] . size + 1;
-	  double one = 1;
-	  ( * XY_distance ) += one / ( u * u );
-	  scMawHighestOccArr[(int) u - k]++;
-	  scNumber++;
-	}
-
-	for ( ; j < (* NmawY); j++ )
-	{
-	   double u = mawY[j] . size + 1;
-	   double one = 1;
-	   ( * XY_distance ) += one / ( u * u );
-	   scMawHighestOccArr[(int) u - k]++;
-	   scNumber++;
-	}*/
 
 /* Union stats */
 
@@ -1298,7 +1145,7 @@ unsigned int maw_seq_comp_factors ( unsigned char * X, TMaw * mawX, unsigned int
     *unionNumber = uNumber;
     *unionTotalLength = uTotalLength;
 
-/* DMAW Evaluation */
+/*DMAW evaluation*/
 
     INT i = 0;
     INT j = 0;
@@ -1366,6 +1213,23 @@ unsigned int maw_seq_comp_factors ( unsigned char * X, TMaw * mawX, unsigned int
   	return ( 1 );
 }
 
+/**
+    D-MAW: A (dis)similarity measure between strings using Minimal Absent Words (MAWs)
+    Copyright (C) 2024 Salvatore Leonardo Pizzuto 
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+**/
 bool factor_of(TMaw maw, INT index, unsigned char * XY, INT N, INT * SA, INT * iSA, INT * LCP) {
     /*INT index, shift;
     if(MAW_X == true) { index = iSA[maw.pos]; shift = 0; }
@@ -1396,7 +1260,7 @@ bool factor_of(TMaw maw, INT index, unsigned char * XY, INT N, INT * SA, INT * i
 }
 
 bool notIn(unsigned char * X, unsigned char * Y, TMaw oneMawY, TMaw * mawX, unsigned int * NmawX) {
-    //return true;
+
     INT i = 0, j, k;
 
     bool phase = false;
