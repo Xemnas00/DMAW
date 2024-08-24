@@ -14,7 +14,7 @@ A comparison between similarity measures based on Minimal Absent Words: an exper
 ********MISSING**********
 ```
 
-This work is a fork of the following: https://github.com/solonas13/maw/tree/master and is based on these previous works:
+This work is a fork of the following: https://github.com/solonas13/maw/tree/master which is based on these previous works:
 ```
 C. Barton, A. Heliou, L. Mouchard, S. P. Pissis:
 Linear-time Computation of Minimal Absent Words Using Suffix Array. 
