@@ -25,5 +25,3 @@ M. Crochemore, G. Fici, R. Mercas, S. P. Pissis:
 Linear-Time Sequence Comparison Using Minimal Absent Words & Applications. 
 LATIN 2016: 334-346
 ```
-
-((((<b>License</b>: GNU GPLv3 License; Copyright (C) 2024 Salvatore Leonardo Pizzuto))))
