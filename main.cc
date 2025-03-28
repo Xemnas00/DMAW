@@ -24,7 +24,7 @@
 #include <sys/time.h>
 #include "mawdefs.h"
 
-
+void save_on_file_simple_matrix_double(char * filename, double ** matrix, INT num_seqs, unsigned char ** seqs_id);
 void save_on_file_INT(char * filename, INT ** matrix, INT num_seqs, unsigned char ** seqs_id);
 void save_on_file_double(char * filename, double ** matrix, INT num_seqs, unsigned char ** seqs_id);
 void save_on_file_INT_histograms(char * filename, INT ** hist_matrix, INT num_seqs, INT k, INT K, unsigned char ** seqs_id);
@@ -48,8 +48,8 @@ int main(int argc, char **argv)
 	char *          alphabet;               // the alphabet
 	unsigned int    i, j;
 
-	double ** D;
-	double * buf;
+	double ** D, ** SC;
+	double * buf, * bufSC;
 
 	/* Decodes the arguments */
         i = decode_switches ( argc, argv, &sw );
@@ -67,7 +67,21 @@ int main(int argc, char **argv)
                 else if ( ! strcmp ( "SIXTEEN", sw . alphabet ) ) alphabet = ( char * ) SIXTEEN;
                 else
                 {
-                        fprintf ( stderr, " Error: alphabet argument a should be `DNA' for nucleotide sequences or `PROT' for protein sequences or `USR' for sequences over a user-defined alphabet!\n" );
+                        for(i = 0; i < num_seqs; i++) fprintf( out_fd, "\t%s", seqs_id[i] );
+
+    fprintf( out_fd, "\n");
+
+	for ( i = 0; i < num_seqs; i++ )
+	{
+		fprintf( out_fd, "%s", seqs_id[i] );
+		for ( j = 0; j < num_seqs; j++ )
+		{
+			fprintf( out_fd, "\t%.2lf", D[i][j]);
+		}
+		fprintf( out_fd, "\n");
+	}
+
+	fclose ( out_fd );    fprintf ( stderr, " Error: alphabet argument a should be `DNA' for nucleotide sequences or `PROT' for protein sequences or `USR' for sequences over a user-defined alphabet!\n" );
                         return ( 1 );
                 }
 
@@ -232,17 +246,32 @@ int main(int argc, char **argv)
 		return ( 1 );
 	}
 
-	/* 2d dynamic memory allocation of the Distance Matrix */
+	/* 2d dynamic memory allocation of the DMAW Distance Matrix */
+	SC = ( double ** ) malloc ( ( num_seqs ) * sizeof ( double * ) );
+	if ( SC == NULL )
+	{
+		fprintf ( stderr, " ERROR: SC distance matrix could not be allocated!!!\n" );
+		return ( 1 );
+	}
+	bufSC =  ( double * ) calloc ( ( ( size_t ) ( num_seqs ) ) * ( ( size_t ) ( num_seqs ) ), sizeof ( double ) );
+	if ( bufSC == NULL )
+	{
+		fprintf ( stderr, " ERROR: SC distance could not be allocated!!!\n" );
+		return ( 1 );
+	}
+	for ( i = 0; i < num_seqs; ++ i ) 	SC[i] = &bufSC[( size_t ) i * ( size_t ) ( num_seqs ) ];
+
+	/* 2d dynamic memory allocation of the DMAW Distance Matrix */
 	D = ( double ** ) malloc ( ( num_seqs ) * sizeof ( double * ) );
    	if ( D == NULL )
     	{
-      		fprintf ( stderr, " ERROR: DM matrix could not be allocated!!!\n" );
+      		fprintf ( stderr, " ERROR: D distance matrix could not be allocated!!!\n" );
       		return ( 1 );
     	}
 	buf =  ( double * ) calloc ( ( ( size_t ) ( num_seqs ) ) * ( ( size_t ) ( num_seqs ) ), sizeof ( double ) );
    	if ( buf == NULL )
     	{
-      		fprintf ( stderr, " ERROR: DM matrix could not be allocated!!!\n" );
+      		fprintf ( stderr, " ERROR: D distance matrix could not be allocated!!!\n" );
       		return ( 1 );
     	}
         for ( i = 0; i < num_seqs; ++ i ) 	D[i] = &buf[( size_t ) i * ( size_t ) ( num_seqs ) ];
@@ -419,7 +448,7 @@ int main(int argc, char **argv)
 
 			compute_maw ( seqs[j], seqs_id[j], sw, &mawY, &NmawY );
 
-			double XY_distance = 0;
+			double XY_D = 0, XY_SC = 0;
 			if ( i == j )	{
                 D[i][j] = 0.0;
                 scMawHighestOccMat[i][j] = 0;
@@ -428,12 +457,12 @@ int main(int argc, char **argv)
             }
 			else
 			{
-				//edit_distance ( seqs[i], seqs[j], &XY_distance );
 				INT scMawHighestOcc = 0, dMawHighestOcc = 0, unionHighestOcc = 0, scNumber = 0, dNumber = 0, unionNumber = 0, scTotalLength = 0, dTotalLength = 0, unionTotalLength = 0;
 
-				maw_seq_comp( seqs[i], mawX,  &NmawX, seqs[j], mawY, &NmawY, &XY_distance, sw . k, sw . K, &scMawHighestOcc, &scNumber, &scTotalLength, i, j, SCMAWhistMatrix, num_seqs );
-				maw_seq_comp_factors( seqs[i], mawX, &NmawX, seqs[j], mawY, &NmawY, &XY_distance, sw . k, sw . K, &dMawHighestOcc, &dNumber, &dTotalLength, i, j, DMAWhistMatrix, num_seqs, &unionHighestOcc, &unionNumber, &unionTotalLength, UnionhistMatrix );
-				D[i][j] = D[j][i] = XY_distance;
+				maw_seq_comp( seqs[i], mawX,  &NmawX, seqs[j], mawY, &NmawY, &XY_SC, sw . k, sw . K, &scMawHighestOcc, &scNumber, &scTotalLength, i, j, SCMAWhistMatrix, num_seqs );
+				maw_seq_comp_factors( seqs[i], mawX, &NmawX, seqs[j], mawY, &NmawY, &XY_D, sw . k, sw . K, &dMawHighestOcc, &dNumber, &dTotalLength, i, j, DMAWhistMatrix, num_seqs, &unionHighestOcc, &unionNumber, &unionTotalLength, UnionhistMatrix );
+				SC[i][j] = SC[i][j] = XY_SC;
+				D[i][j] = D[j][i] = XY_D;
 				scMawHighestOccMat[i][j] = scMawHighestOccMat[j][i] = scMawHighestOcc;
 				dMawHighestOccMat[i][j] = dMawHighestOccMat[j][i] = dMawHighestOcc;
 				UnionHighestOccMat[i][j] = UnionHighestOccMat[j][i] = unionHighestOcc;
@@ -449,34 +478,42 @@ int main(int argc, char **argv)
 
 	double end = gettime();
 
-    char * output_dist_filename = (char *) malloc(100 * sizeof(char));
-	sprintf(output_dist_filename, "./RESULTS/%s", output_filename);
-
-	if ( ! ( out_fd = fopen ( output_dist_filename, "w" ) ) )
-	{
-		fprintf ( stderr, " Error: Cannot open file %s!\n", output_filename );
-		return ( 1 );
-	}
+//    char * output_dist_filename = (char *) malloc(100 * sizeof(char));
+//	sprintf(output_dist_filename, "./RESULTS/%s", output_filename);
+//
+//	if ( ! ( out_fd = fopen ( output_dist_filename, "w" ) ) )
+//	{
+//		fprintf ( stderr, " Error: Cannot open file %s!\n", output_filename );
+//		return ( 1 );
+//	}
 
 	//fprintf( out_fd, "%d\n", num_seqs );
     //fprintf( out_fd, "\t");
 
-    for(i = 0; i < num_seqs; i++) fprintf( out_fd, "\t%s", seqs_id[i] );
+//    for(i = 0; i < num_seqs; i++) fprintf( out_fd, "\t%s", seqs_id[i] );
+//
+//    fprintf( out_fd, "\n");
+//
+//	for ( i = 0; i < num_seqs; i++ )
+//	{
+//		fprintf( out_fd, "%s", seqs_id[i] );
+//		for ( j = 0; j < num_seqs; j++ )
+//		{
+//			fprintf( out_fd, "\t%.2lf", D[i][j]);
+//		}
+//		fprintf( out_fd, "\n");
+//	}
+//
+//	fclose ( out_fd );
 
-    fprintf( out_fd, "\n");
 
-	for ( i = 0; i < num_seqs; i++ )
-	{
-		fprintf( out_fd, "%s", seqs_id[i] );
-		for ( j = 0; j < num_seqs; j++ )
-		{
-			fprintf( out_fd, "\t%.2lf", D[i][j]);
-		}
-		fprintf( out_fd, "\n");
-	}
+	char * dmaw_output_dist_filename = (char *) malloc(100 * sizeof(char));
+	sprintf(dmaw_output_dist_filename, "./RESULTS/DMAW_%s.csv", output_filename);
+    save_on_file_simple_matrix_double(dmaw_output_dist_filename, D, num_seqs, seqs_id);
 
-	fclose ( out_fd );
-
+	char * scmaw_output_dist_filename = (char *) malloc(100 * sizeof(char));
+	sprintf(scmaw_output_dist_filename, "./RESULTS/SCMAW_%s.csv", output_filename);
+	save_on_file_simple_matrix_double(scmaw_output_dist_filename, SC, num_seqs, seqs_id);
 
 	char * scmaw_most_common_lengths = (char *) malloc(100 * sizeof(char));
 	sprintf(scmaw_most_common_lengths, "./RESULTS/SCMAW_most_common_lengths_%s.csv", output_filename);
@@ -537,6 +574,8 @@ int main(int argc, char **argv)
         free ( sw . alphabet );
 	free ( buf );
         free ( D );
+        free(bufSC);
+        free(SC);
         //Buffers
         free(bufDMawHighestOccMat);
         free(bufScMawHighestOccMat);
@@ -550,7 +589,8 @@ int main(int argc, char **argv)
         free(DMAWhistMatrix);
         free(SCMAWhistMatrix);
         //Filenames 
-        free(output_dist_filename);
+        free(dmaw_output_dist_filename);
+        free(scmaw_output_dist_filename);
         free(scmaw_most_common_lengths);
         free(dmaw_most_common_lengths);
         free(union_most_common_lengths);
@@ -564,6 +604,30 @@ int main(int argc, char **argv)
         free(UNION_hist_seqs);
 
 	return ( 0 );
+}
+
+void save_on_file_simple_matrix_double(char * filename, double ** matrix, INT num_seqs, unsigned char ** seqs_id) {
+
+	FILE *file;
+
+	if ( ! ( file = fopen ( filename, "w") ) )
+	{
+		fprintf ( stderr, " Error: Cannot open file %s!\n", filename );
+		return ;
+	}
+
+	fprintf(file, ",");
+	for(int i = 0; i < num_seqs; i++) fprintf(file, "%s,", seqs_id[i]);
+	for(int i = 0; i < num_seqs; i++) {
+		fprintf(file, "\n");
+		fprintf(file, "%s,", seqs_id[i]);
+		for(int j = 0; j < num_seqs; j++) {
+			fprintf(file, "%.2f,", matrix[i][j]);
+		}
+
+	}
+
+	fclose(file);
 }
 
 void save_on_file_INT(char * filename, INT ** matrix, INT num_seqs, unsigned char ** seqs_id) {
