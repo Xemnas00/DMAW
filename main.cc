@@ -246,7 +246,7 @@ int main(int argc, char **argv)
 		return ( 1 );
 	}
 
-	/* 2d dynamic memory allocation of the DMAW Distance Matrix */
+	/* 2d dynamic memory allocation of the SCMAW Distance Matrix */
 	SC = ( double ** ) malloc ( ( num_seqs ) * sizeof ( double * ) );
 	if ( SC == NULL )
 	{
@@ -281,7 +281,7 @@ int main(int argc, char **argv)
 
 
 	/*Matrices*/
-	//FIRST
+	//SCMAW set highest occurences matrix
 	INT ** scMawHighestOccMat;
 	INT * bufScMawHighestOccMat;
 	scMawHighestOccMat = (INT **) malloc ( (num_seqs) * sizeof(INT *) );
@@ -294,7 +294,7 @@ int main(int argc, char **argv)
     	}
     for ( i = 0; i < num_seqs; ++ i ) 	scMawHighestOccMat[i] = &bufScMawHighestOccMat[( size_t ) i * ( size_t ) ( num_seqs ) ];
 
-    //SECOND
+    //DMAW set highest occurences Matrix
     INT ** dMawHighestOccMat;
 	INT * bufDMawHighestOccMat;
 	dMawHighestOccMat = (INT **) malloc ( (num_seqs) * sizeof(INT *) );
@@ -307,7 +307,7 @@ int main(int argc, char **argv)
     	}
     for ( i = 0; i < num_seqs; ++ i ) 	dMawHighestOccMat[i] = &bufDMawHighestOccMat[( size_t ) i * ( size_t ) ( num_seqs ) ];
 
-    //SECOND - but with union
+    //UNION set highest occurences matrix
     INT ** UnionHighestOccMat;
 	INT * UnionbufHighestOccMat;
 	UnionHighestOccMat = (INT **) malloc ( (num_seqs) * sizeof(INT *) );
@@ -320,7 +320,7 @@ int main(int argc, char **argv)
     	}
     for ( i = 0; i < num_seqs; ++ i ) 	UnionHighestOccMat[i] = &UnionbufHighestOccMat[( size_t ) i * ( size_t ) ( num_seqs ) ];
 
-    //THIRD
+    //DMAW/SCMAW cardinality ratio matrix
     double ** cardRatioMatrix;
 	double * bufCardRatioMatrix;
 	cardRatioMatrix = (double **) malloc ( (num_seqs) * sizeof(double *) );
@@ -333,7 +333,7 @@ int main(int argc, char **argv)
     	}
     for ( i = 0; i < num_seqs; ++ i ) 	cardRatioMatrix[i] = &bufCardRatioMatrix[( size_t ) i * ( size_t ) ( num_seqs ) ];
 
-    //THIRD - DMAW/Union card matrix
+    //DMAW/Union cardinality ratio matrix
     double ** UnionCardRatioMatrix;
 	double * UnionbufCardRatioMatrix;
 	UnionCardRatioMatrix = (double **) malloc ( (num_seqs) * sizeof(double *) );
@@ -347,7 +347,7 @@ int main(int argc, char **argv)
     for ( i = 0; i < num_seqs; ++ i ) 	UnionCardRatioMatrix[i] = &UnionbufCardRatioMatrix[( size_t ) i * ( size_t ) ( num_seqs ) ];
 
 
-    //FOURTH
+    //DMAW/SCMAW total length ratio matrix
     double ** totalLengthRatioMatrix;
 	double * bufTotalLengthMatrix;
 	totalLengthRatioMatrix = (double **) malloc ( (num_seqs) * sizeof(double *) );
@@ -360,7 +360,7 @@ int main(int argc, char **argv)
     	}
     for ( i = 0; i < num_seqs; ++ i ) 	totalLengthRatioMatrix[i] = &bufTotalLengthMatrix[( size_t ) i * ( size_t ) ( num_seqs ) ];
 
-    //FOURTH - Union/DMAW length ratio
+    //DMAW/Union total length ratio matrix
     double ** UnionTotalLengthRatioMatrix;
 	double * UnionBufTotalLengthMatrix;
 	UnionTotalLengthRatioMatrix = (double **) malloc ( (num_seqs) * sizeof(double *) );
@@ -373,7 +373,7 @@ int main(int argc, char **argv)
     	}
     for ( i = 0; i < num_seqs; ++ i ) 	UnionTotalLengthRatioMatrix[i] = &UnionBufTotalLengthMatrix[( size_t ) i * ( size_t ) ( num_seqs ) ];
 
-    //FIFTH
+    //Total MAWs histogram matrix
     INT ** histMatrix;
 	INT * bufHistMatrix;
 	histMatrix = (INT **) malloc ( (num_seqs) * sizeof(INT *) );
@@ -386,7 +386,7 @@ int main(int argc, char **argv)
     	}
     for ( i = 0; i < num_seqs; ++ i ) 	histMatrix[i] = &bufHistMatrix[( size_t ) i * ( size_t ) ( sw . K - sw . k + 1 ) ];
 
-    //SIXTH
+    //DMAW MAWs histogram matrix
     INT ** DMAWhistMatrix;
 	INT * DMAWbufHistMatrix;
 	DMAWhistMatrix = (INT **) malloc ( (num_seqs * num_seqs ) * sizeof(INT *) );
@@ -399,7 +399,7 @@ int main(int argc, char **argv)
     	}
     for ( i = 0; i < num_seqs * num_seqs; ++ i ) 	DMAWhistMatrix[i] = &DMAWbufHistMatrix[( size_t ) i * ( size_t ) ( sw . K - sw . k + 1 ) ];
 
-    //SEVENTH
+    //SCMAW MAWs histogram matrix
     INT ** SCMAWhistMatrix;
 	INT * SCMAWbufHistMatrix;
 	SCMAWhistMatrix = (INT **) malloc ( (num_seqs * num_seqs) * sizeof(INT *) );
@@ -412,7 +412,7 @@ int main(int argc, char **argv)
     	}
     for ( i = 0; i < num_seqs * num_seqs; ++ i ) 	SCMAWhistMatrix[i] = &SCMAWbufHistMatrix[( size_t ) i * ( size_t ) ( sw . K - sw . k + 1 ) ];
 
-    //EIGHTH
+    //UNION MAWs histogram matrix
     INT ** UnionhistMatrix;
 	INT * UnionbufHistMatrix;
 	UnionhistMatrix = (INT **) malloc ( (num_seqs * num_seqs) * sizeof(INT *) );
