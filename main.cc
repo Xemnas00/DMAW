@@ -54,6 +54,7 @@ int main(int argc, char **argv)
 	/* Decodes the arguments */
         i = decode_switches ( argc, argv, &sw );
 
+
 	/* Check the arguments */
         if ( i < 9 )
         {
@@ -246,6 +247,7 @@ int main(int argc, char **argv)
 		return ( 1 );
 	}
 
+
 	/* 2d dynamic memory allocation of the SCMAW Distance Matrix */
 	SC = ( double ** ) malloc ( ( num_seqs ) * sizeof ( double * ) );
 	if ( SC == NULL )
@@ -277,7 +279,6 @@ int main(int argc, char **argv)
         for ( i = 0; i < num_seqs; ++ i ) 	D[i] = &buf[( size_t ) i * ( size_t ) ( num_seqs ) ];
 
 	fprintf( stderr, "Computing minimal absent words and making the comparison.\n" );
-
 
 
 	/*Matrices*/
@@ -425,18 +426,19 @@ int main(int argc, char **argv)
     	}
     for ( i = 0; i < num_seqs * num_seqs; ++ i ) 	UnionhistMatrix[i] = &UnionbufHistMatrix[( size_t ) i * ( size_t ) ( sw . K - sw . k + 1 ) ];
 
-
 	#pragma omp parallel for
 	for ( int i = 0; i < num_seqs; i++ )
 	{
+       
 		TMaw * mawX = NULL;
 		unsigned int NmawX = 0;
+      
 		compute_maw ( seqs[i], seqs_id[i], sw, &mawX, &NmawX );
 
 		//printf("%ld", NmawX);
 		for(int maw_num = 0; maw_num < NmawX; maw_num++) {
             //printf("Lunghezza %ld rilevata!", mawX[maw_num].size);
-            //if(mawX[maw_num].size - sw.k < 0) printf("PORCODIO");
+            //if(mawX[maw_num].size - sw.k < 0) printf("NOPE");
             histMatrix[i][mawX[maw_num].size + 1 - sw.k]++;
 		}
 
@@ -458,7 +460,7 @@ int main(int argc, char **argv)
 			else
 			{
 				INT scMawHighestOcc = 0, dMawHighestOcc = 0, unionHighestOcc = 0, scNumber = 0, dNumber = 0, unionNumber = 0, scTotalLength = 0, dTotalLength = 0, unionTotalLength = 0;
-
+ 
 				maw_seq_comp( seqs[i], mawX,  &NmawX, seqs[j], mawY, &NmawY, &XY_SC, sw . k, sw . K, &scMawHighestOcc, &scNumber, &scTotalLength, i, j, SCMAWhistMatrix, num_seqs );
 				maw_seq_comp_factors( seqs[i], mawX, &NmawX, seqs[j], mawY, &NmawY, &XY_D, sw . k, sw . K, &dMawHighestOcc, &dNumber, &dTotalLength, i, j, DMAWhistMatrix, num_seqs, &unionHighestOcc, &unionNumber, &unionTotalLength, UnionhistMatrix );
 				SC[i][j] = SC[i][j] = XY_SC;
