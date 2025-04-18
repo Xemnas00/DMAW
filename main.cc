@@ -436,10 +436,15 @@ int main(int argc, char **argv)
 		compute_maw ( seqs[i], seqs_id[i], sw, &mawX, &NmawX );
 
 		//printf("%ld", NmawX);
+        printf("MAWs of %s=\"%s\":\n", seqs_id[i], seqs[i]);
 		for(int maw_num = 0; maw_num < NmawX; maw_num++) {
             //printf("Lunghezza %ld rilevata!", mawX[maw_num].size);
             //if(mawX[maw_num].size - sw.k < 0) printf("NOPE");
             histMatrix[i][mawX[maw_num].size + 1 - sw.k]++;
+
+            fprintf(stderr, " <%c,%ld,%ld> = \"%c", mawX[maw_num] . letter, mawX[maw_num] . pos, mawX[maw_num] . size, mawX[maw_num].letter );
+            for(INT k = 0; k < mawX[maw_num].size; k++) printf("%c", seqs[i][mawX[maw_num].pos + k]);
+            printf("\"\n");
 		}
 
 
