@@ -1,6 +1,7 @@
 .idea
 /RESULTS/*.csv
 /RESULTS/*.out
+/RESULTS/*.txt
 /libsdsl
 /sdsl-lite
 *.o
